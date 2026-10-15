@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>activity</groupId>
-    <artifactId>jdbc_connection</artifactId>
+    <artifactId>campus-bookstore</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>jdbc_connection</name>
-    <description>Lab 1: JDBC student database operations</description>
+    <name>campus-bookstore</name>
+    <description>Lab 1: JDBC campus bookstore catalog</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,7 +35,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <mainClass>activity.StudentDatabaseOperations</mainClass>
+                    <mainClass>activity.BookstoreCatalog</mainClass>
                 </configuration>
             </plugin>
         </plugins>
