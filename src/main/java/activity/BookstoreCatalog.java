@@ -7,13 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Campus bookstore catalog.
- *
- * Each run creates BookstoreDB, rebuilds the books table, stocks 11 titles,
- * lists the five cheapest books, puts one title on sale, removes a
- * discontinued title, and prints the average shelf price.
- */
 public class BookstoreCatalog {
 
     // Change these if your local MySQL login is different.
