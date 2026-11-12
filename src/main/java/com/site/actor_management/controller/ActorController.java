@@ -2,7 +2,9 @@ package com.site.actor_management.controller;
 
 import com.site.actor_management.aspect.LogExecutionTime;
 import com.site.actor_management.model.Actor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,15 @@ public class ActorController {
         actors.add(new Actor(5, "Steven Strange", "Doctor Strange"));
     }
 
+    private Actor findActor(int id) {
+        for (Actor currentActor : actors) {
+            if (currentActor.getId() == id) {
+                return currentActor;
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actor with ID " + id + " is not found");
+    }
+
     @LogExecutionTime
     @PostMapping
     public Actor createActor(@RequestBody Actor newActor) {
@@ -37,12 +48,7 @@ public class ActorController {
     @LogExecutionTime
     @GetMapping("/{id}")
     public Actor getActorById(@PathVariable int id) {
-        for (Actor currentActor : actors) {
-            if (currentActor.getId() == id) {
-                return currentActor;
-            }
-        }
-        return null;
+        return findActor(id);
     }
 
     @LogExecutionTime
@@ -58,25 +64,17 @@ public class ActorController {
     @LogExecutionTime
     @PutMapping("/{id}")
     public Actor updateActor(@PathVariable int id, @RequestBody Actor updatedActor) {
-        for (Actor currentActor : actors) {
-            if (currentActor.getId() == id) {
-                currentActor.setName(updatedActor.getName());
-                currentActor.setMovieName(updatedActor.getMovieName());
-                return currentActor;
-            }
-        }
-        return null;
+        Actor currentActor = findActor(id);
+        currentActor.setName(updatedActor.getName());
+        currentActor.setMovieName(updatedActor.getMovieName());
+        return currentActor;
     }
 
     @LogExecutionTime
     @DeleteMapping("/{id}")
     public String deleteActor(@PathVariable int id) {
-        for (int i = 0; i < actors.size(); i++) {
-            if (actors.get(i).getId() == id) {
-                actors.remove(i);
-                return "Actor with ID " + id + " is deleted";
-            }
-        }
-        return "Actor with ID " + id + " is not found";
+        Actor currentActor = findActor(id);
+        actors.remove(currentActor);
+        return "Actor with ID " + id + " is deleted";
     }
 }
