@@ -2,60 +2,44 @@ package com.site.actor_management.controller;
 
 import com.site.actor_management.aspect.LogExecutionTime;
 import com.site.actor_management.model.Actor;
-import org.springframework.http.HttpStatus;
+import com.site.actor_management.service.ActorService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/Actor")
 public class ActorController {
 
-    private List<Actor> actors = new ArrayList<>();
+    private final ActorService actorService;
 
-    public ActorController() {
-        actors.add(new Actor(1, "Peter Parker", "Spider-man"));
-        actors.add(new Actor(2, "Tony Stark", "Iron-man"));
-        actors.add(new Actor(3, "Bruce wayne", "Batman"));
-        actors.add(new Actor(4, "Logan", "Wolverine"));
-        actors.add(new Actor(5, "Steven Strange", "Doctor Strange"));
-    }
-
-    private Actor findActor(int id) {
-        for (Actor currentActor : actors) {
-            if (currentActor.getId() == id) {
-                return currentActor;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actor with ID " + id + " is not found");
+    public ActorController(ActorService actorService) {
+        this.actorService = actorService;
     }
 
     @LogExecutionTime
     @PostMapping
     public Actor createActor(@RequestBody Actor newActor) {
-        actors.add(newActor);
-        return newActor;
+        return actorService.createActor(newActor);
     }
 
     @LogExecutionTime
     @GetMapping
     public List<Actor> getAllActors() {
-        return actors;
+        return actorService.getAllActors();
     }
 
     @LogExecutionTime
     @GetMapping("/{id}")
     public Actor getActorById(@PathVariable int id) {
-        return findActor(id);
+        return actorService.getActorById(id);
     }
 
     @LogExecutionTime
     @GetMapping(value = "/iterate", produces = "text/plain")
     public String iterateAllActors() {
         StringBuilder result = new StringBuilder();
-        for (Actor currentActor : actors) {
+        for (Actor currentActor : actorService.getAllActors()) {
             result.append(currentActor.output()).append("\n");
         }
         return result.toString();
@@ -64,17 +48,13 @@ public class ActorController {
     @LogExecutionTime
     @PutMapping("/{id}")
     public Actor updateActor(@PathVariable int id, @RequestBody Actor updatedActor) {
-        Actor currentActor = findActor(id);
-        currentActor.setName(updatedActor.getName());
-        currentActor.setMovieName(updatedActor.getMovieName());
-        return currentActor;
+        return actorService.updateActor(id, updatedActor);
     }
 
     @LogExecutionTime
     @DeleteMapping("/{id}")
     public String deleteActor(@PathVariable int id) {
-        Actor currentActor = findActor(id);
-        actors.remove(currentActor);
+        actorService.deleteActor(id);
         return "Actor with ID " + id + " is deleted";
     }
 }
