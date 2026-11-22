@@ -1,8 +1,8 @@
-# Lab 7: Spring Data JPA
+# Lab 8: Student Management API
 
-This project is the actor API saved in MySQL with Spring Data JPA.
+This project is a REST API for student records. Students are stored in MySQL with Spring Data JPA.
 
-The same endpoints from the earlier lab are still here. Actors are stored in the `actors` table in the `actor_db` database instead of a list in memory. A missing id still returns 404. The five sample actors are inserted only when the table is empty. MySQL assigns the id on create.
+A student has an id, first name, last name, email, and department. MySQL assigns the id when a student is created. A missing id returns 404.
 
 The database password is read from the `DB_PASSWORD` environment variable.
 
@@ -13,11 +13,10 @@ $env:DB_PASSWORD="your-mysql-password"
 .\mvnw.cmd spring-boot:run
 ```
 
-Endpoints, all under `/Actor`:
+Endpoints, all under `/students`:
 
-- `GET /Actor` lists every actor
-- `GET /Actor/{id}` returns one actor
-- `GET /Actor/iterate` prints every actor as plain text
-- `POST /Actor` creates an actor
-- `PUT /Actor/{id}` updates the name and movie
-- `DELETE /Actor/{id}` deletes an actor
+- `GET /students` lists every student
+- `GET /students/{id}` returns one student
+- `POST /students` creates a student
+- `PUT /students/{id}` updates a student
+- `DELETE /students/{id}` deletes a student
